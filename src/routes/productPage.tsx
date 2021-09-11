@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {ProductItem} from 'components/productItem/productItem';
 
 interface ProductPageProps extends ProductPageRouteProps {}
 
@@ -20,9 +21,15 @@ export class ProductPage extends React.PureComponent<ProductPageProps> {
 	render(): React.ReactElement {
 
 		return (
-			<div
-				children={`product page ${this.productRouteId}`}
-			/>
+			<>
+				<div
+					children={`product page ${this.productRouteId}`}
+				/>
+
+				<ProductItem
+
+				/>
+			</>
 		);
 	}
 }

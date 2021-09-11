@@ -1,21 +1,29 @@
 import 'sass/normalize.sass';
 import * as React from 'react';
-import {BrowserRouter, Redirect, Route, Switch} from 'react-router-dom';
+import {BrowserRouter} from 'react-router-dom';
 import {NavLinkStyled} from 'smallComponents/navLinkStyled';
+import {MainRouterSwitch} from 'routes';
+import {AppRoute} from 'mainVar';
 import * as css from './main.sass';
 
 export function ScentbirdReactApp(): React.ReactElement {
 	return (
 		<React.StrictMode>
+
 			<BrowserRouter>
+
 				<ErrorBoundaryMain>
+
 					<div className={css.main}>
 						<MainHeaderWithNavigation />
 
 						<MainRouterSwitch />
 					</div>
+
 				</ErrorBoundaryMain>
+
 			</BrowserRouter>
+
 		</React.StrictMode>
 	);
 }
@@ -26,8 +34,7 @@ interface ErrorBoundaryMainState {
 
 class ErrorBoundaryMain extends React.PureComponent<{}, ErrorBoundaryMainState> {
 	static getDerivedStateFromError(error: unknown): Partial<ErrorBoundaryMainState> {
-		console.log('ErrorBoundary caught error');
-		console.error(error);
+		console.info('ErrorBoundary caught error here');
 
 		return {error};
 	}
@@ -41,10 +48,6 @@ class ErrorBoundaryMain extends React.PureComponent<{}, ErrorBoundaryMainState> 
 	}
 }
 
-const MainPage = React.lazy(() => import('routes/mainPage').then(x => ({default: x.MainPage})));
-const ProductPage = React.lazy(() => import('routes/productPage').then(x => ({default: x.ProductPage})));
-const CheckoutPage = React.lazy(() => import('routes/checkoutPage').then(x => ({default: x.CheckoutPage})));
-
 const MainHeaderWithNavigation = React.memo(
 	function MainHeaderWithNavigation() {
 		return (
@@ -55,45 +58,13 @@ const MainHeaderWithNavigation = React.memo(
 			</div>
 		);
 	}
-)
-
-const MainRouterSwitch = React.memo(
-	function MainRouteSwitch() {
-		return (
-			<React.Suspense
-				fallback={'Loading...'}
-			>
-				<Switch>
-					<Route
-						exact
-						path={'/'}
-						component={MainPage}
-					/>
-
-					<Route
-						path={'/product/:id'}
-						component={ProductPage}
-					/>
-
-					<Route
-						path={'/checkout'}
-						component={CheckoutPage}
-					/>
-
-					<Redirect
-						to={'/'}
-					/>
-				</Switch>
-			</React.Suspense>
-		);
-	}
 );
 
 const MainNavigation = function MainNavigation(): React.ReactElement {
 	return (
 		<>
 			<NavLinkStyled
-				to={'/'}
+				to={AppRoute.main}
 				exact
 				children={'Home'}
 			/>
@@ -101,16 +72,16 @@ const MainNavigation = function MainNavigation(): React.ReactElement {
 			{' | '}
 
 			<NavLinkStyled
-				to={'/checkout'}
+				to={AppRoute.checkout}
 				children={'Checkout'}
 			/>
 
 			{' | '}
 
 			<NavLinkStyled
-				to={'/product/1'}
+				to={`${AppRoute._product}/1`}
 				children={'Product'}
 			/>
 		</>
 	);
-}
+};
