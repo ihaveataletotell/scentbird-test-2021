@@ -1,5 +1,6 @@
-import {NavLink, NavLinkProps} from 'react-router-dom';
+import {NavLink, NavLinkProps, Link, LinkProps} from 'react-router-dom';
 import * as React from 'react';
+import cn from 'classnames';
 import * as css from './navLinkStyled.sass';
 
 const styledProps: Partial<NavLinkProps> = {
@@ -10,8 +11,17 @@ const styledProps: Partial<NavLinkProps> = {
 export const NavLinkStyled = (props: NavLinkProps): React.ReactElement => {
 	return (
 		<NavLink
-			{...props}
 			{...styledProps}
+			{...props}
+		/>
+	)
+}
+
+export const LinkStyled = (props: LinkProps): React.ReactElement => {
+	return (
+		<Link
+			className={cn(props.className, styledProps.className)}
+			{...props}
 		/>
 	)
 }

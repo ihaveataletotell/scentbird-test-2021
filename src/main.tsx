@@ -1,4 +1,6 @@
 import 'sass/normalize.sass';
+import 'sass/customize.sass';
+
 import * as React from 'react';
 import {BrowserRouter} from 'react-router-dom';
 import {NavLinkStyled} from 'smallComponents/navLinkStyled';

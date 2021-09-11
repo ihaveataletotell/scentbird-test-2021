@@ -13,7 +13,7 @@ declare global {
 			howItWorks: string;
 			id: string;
 			ingredients: string;
-			issueForms: IssueForm[];
+			issueKinds: IssueKind[];
 			name: string;
 			nameOfMaker: string;
 			reviews: SingleReview[];
@@ -21,17 +21,17 @@ declare global {
 
 		type Gender = 'male' | 'female' | 'uni';
 
-		interface IssueForm {
+		interface IssueKind {
 			countLeft: number;
 			id: string;
 			previewUrl: string;
 			productId: string;
 			productPrice: number;
 			productSize: string;
-			type: IssueType;
+			paymentType: IssuePaymentType;
 		}
 
-		type IssueType = 'subscription' | 'onetime';
+		type IssuePaymentType = 'subscription' | 'onetime';
 
 		interface SingleReview {
 			date: number;

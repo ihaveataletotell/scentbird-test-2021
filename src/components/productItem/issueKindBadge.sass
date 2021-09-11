@@ -1,0 +1,48 @@
+.issueBadge
+	border: 1px solid #E6E6E6
+	cursor: pointer
+	height: 50px
+	outline: none
+	padding: 5px
+	transition: border-color 0.2s $cubic-bezier-default
+
+	&:focus, &:hover
+		border-color: darken(#E6E6E6, 10%)
+
+.issueBadge__preview
+	width: 40px
+	height: 40px
+	margin-right: 5px
+	flex: 0 0 40px
+
+.issueBadge__text
+	line-height: 1.21
+	display: flex
+	flex-flow: column nowrap
+
+.issueBadge__text_large
+	flex-flow: row nowrap
+
+	div:first-child
+		margin-right: 5px
+
+.issueBadge_active
+	border-color: #FF408E
+	cursor: default
+
+	&:focus, &:hover
+		border-color: #FF408E
+
+.selectedBadge
+	display: flex
+
+
+.selectedBadge__preview
+	width: 50px
+	height: 50px
+	margin-right: 10px
+	flex: 0 0 50px
+
+.selectedBadge__text
+	font-size: 16px
+	line-height: 22px

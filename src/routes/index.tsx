@@ -20,7 +20,7 @@ export const MainRouterSwitch = React.memo(
 					/>
 
 					<Route
-						path={AppRoute.productWithId}
+						path={AppRoute.product_Id}
 						component={ProductPage}
 					/>
 

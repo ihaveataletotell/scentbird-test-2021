@@ -1,7 +1,8 @@
 export const enum AppRoute {
 	main = '/',
 	checkout = '/checkout',
-	productWithId = '/product/:id',
+	product_Id = '/product/:id',
+	product_Id_reviews = '/product/:id/reviews',
 
 	_product = '/product',
 }
