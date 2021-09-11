@@ -7,10 +7,22 @@
 		font-style: $style
 		src: url($path + $fileName + '.' + $format) format($format)
 
-@mixin width-1440
-	@media (min-width: 1440px)
+@mixin width-320
+	@media (min-width: 320px)
 		@content
 
-@mixin width-1880
-	@media (min-width: 1880px)
+@mixin width-590
+	@media (min-width: 590px)
+		@content
+
+@mixin width-884
+	@media (min-width: 884px)
+		@content
+
+@mixin width-1100
+	@media (min-width: 1100px)
+		@content
+
+@mixin width-1440
+	@media (min-width: 1440px)
 		@content

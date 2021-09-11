@@ -1,9 +1,8 @@
 import * as React from 'react';
 import cn from 'classnames';
-import {MediaMatcher} from 'classes/mediaMatcher';
 import {cssUtility} from 'common/cssHelper';
-import * as css from './issueKindBadge.sass';
 import {ComponentUtils} from 'common/componentUtils';
+import * as css from './issueKindBadge.sass';
 
 interface IssueKindBadgeProps extends VCProps, IssueKindBadgeBasicProps {
 	isActive: boolean;
@@ -12,9 +11,10 @@ interface IssueKindBadgeProps extends VCProps, IssueKindBadgeBasicProps {
 
 interface IssueKindBadgeBasicProps extends VCProps {
 	data: DM.Product.IssueKind | undefined;
+	longCaptionMode: boolean;
 }
 
-const getIssueKindData = (data: DM.Product.IssueKind, isLarge = !MediaMatcher.isMobileOrTabletPortrait) => {
+const getIssueKindData = (data: DM.Product.IssueKind, isLarge: boolean) => {
 	const paymentTypeTextSmall = textByIssuePaymentType(data.paymentType, false);
 	const paymentTypeTextLarge = textByIssuePaymentType(data.paymentType, true);
 	const paymentsTypeTextByMedia = isLarge ? paymentTypeTextLarge : paymentTypeTextSmall;
@@ -32,7 +32,7 @@ const getIssueKindData = (data: DM.Product.IssueKind, isLarge = !MediaMatcher.is
 export function IssueKindSelected(props: IssueKindBadgeBasicProps): React.ReactElement | null {
 	if (!props.data) return null;
 
-	const calcData = getIssueKindData(props.data);
+	const calcData = getIssueKindData(props.data, props.longCaptionMode);
 	const text1 = `${calcData.paymentsTypeTextByMedia} price: `;
 	const text2 = `Size: `;
 	const price = (props.data.productPrice / 100).toFixed(2);
@@ -66,8 +66,6 @@ export function IssueKindSelected(props: IssueKindBadgeBasicProps): React.ReactE
 }
 
 export function IssueKindBadge(props: IssueKindBadgeProps): React.ReactElement | null {
-	if (!props.data) return null;
-
 	const onClick = React.useCallback((e: ReactClickEvent) => {
 		props.onSelect(e, props.data!);
 	}, [props.data]);
@@ -77,7 +75,8 @@ export function IssueKindBadge(props: IssueKindBadgeProps): React.ReactElement |
 		[onClick],
 	);
 
-	const calcData = getIssueKindData(props.data);
+	if (!props.data) return null;
+	const calcData = getIssueKindData(props.data, props.longCaptionMode);
 
 	return (
 		<div
@@ -101,9 +100,13 @@ export function IssueKindBadge(props: IssueKindBadgeProps): React.ReactElement |
 			<div
 				className={cn(css.issueBadge__text, calcData.isLarge && css.issueBadge__text_large)}
 			>
-				<div children={props.data.productSize} />
+				<div>
+					{props.data.productSize}
 
-				<div children={calcData.paymentsTypeTextByMedia} />
+					{!calcData.isLarge ? '\n' : ' '}
+
+					{calcData.paymentsTypeTextByMedia}
+				</div>
 			</div>
 		</div>
 	);

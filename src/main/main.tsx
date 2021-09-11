@@ -1,12 +1,13 @@
 import 'sass/normalize.sass';
 import 'sass/customize.sass';
-
 import * as React from 'react';
 import {BrowserRouter} from 'react-router-dom';
 import {NavLinkStyled} from 'smallComponents/navLinkStyled';
 import {MainRouterSwitch} from 'routes';
-import {AppRoute} from 'mainVar';
-import * as css from './main.sass';
+import {AppRoute} from 'main/mainVar';
+import 'classes/linearFnLayout';
+import {DomEventBus} from 'main/domEventBus';
+import * as css from 'main/main.sass';
 
 export function ScentbirdReactApp(): React.ReactElement {
 	return (
@@ -20,6 +21,8 @@ export function ScentbirdReactApp(): React.ReactElement {
 						<MainHeaderWithNavigation />
 
 						<MainRouterSwitch />
+
+						<DomEventBus />
 					</div>
 
 				</ErrorBoundaryMain>

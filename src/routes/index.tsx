@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {Redirect, Route, Switch} from 'react-router-dom';
-import {AppRoute} from 'mainVar';
+import {AppRoute} from 'main/mainVar';
 
 const MainPage = React.lazy(() => import('routes/mainPage').then(x => ({default: x.MainPage})));
 const ProductPage = React.lazy(() => import('routes/productPage').then(x => ({default: x.ProductPage})));

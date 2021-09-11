@@ -1,40 +1,92 @@
 import * as React from 'react';
+import {useEffect} from 'react';
 import cn from 'classnames';
 import {StarsRatingAndText} from 'components/productItem/starIcon';
 import {LinkStyled} from 'smallComponents/navLinkStyled';
 import {cssUtility} from 'common/cssHelper';
 import {IssueKindBadge, IssueKindSelected} from 'components/productItem/issueKindBadge';
 import {UXButton} from 'controls/button/uxButton';
-import * as css from './productItem.sass';
 import {ReadMore} from 'components/readMore';
-import {UXTabsSwitch, UXTabsSwitchVC} from 'controls/tabs/uxTabs';
+import {UXTabsSwitch} from 'controls/tabs/uxTabs';
 import {UXTabsItem} from 'controls/tabs/types';
+import {LazyReceiver} from 'classes/notifier';
+import {HookCore} from 'classes/hookCore';
+import {MediaMatcher, ScreenWidth} from 'classes/mediaMatcher';
+import * as css from './productItem.sass';
 
 interface ProductItemProps {
 	data: DM.Product.Data;
 }
 
+const mediaMatcher = new MediaMatcher();
+const activeIssueIdReceiver = new LazyReceiver<string | undefined>();
+
+interface ProductItemPreviewWrapProps extends VCWrapProps {
+	data: DM.Product.Data;
+	place: 'col1' | 'col2';
+}
+
+const ProductItemPreviewWrap = (props: ProductItemPreviewWrapProps): React.ReactElement | null => {
+	const [activeId] = HookCore.useReceiver(activeIssueIdReceiver);
+	const [screenWidth] = HookCore.useReceiver(mediaMatcher);
+
+	const selectedData = React.useMemo(() => {
+		return props.data.issueKinds.find(x => x.id == activeId);
+	}, [activeId, props.data.issueKinds]);
+
+	if (
+		!screenWidth
+		|| props.place == 'col1' && screenWidth < ScreenWidth.tabletLandscape
+		|| props.place == 'col2' && screenWidth >= ScreenWidth.tabletLandscape
+	) return null;
+
+	if (props.doNotRender) return null;
+
+	return (
+		<ProductItemPreview
+			data={selectedData}
+			gender={props.data.gender}
+			productName={`${props.data.name} ${props.data.category}`}
+		/>
+	);
+}
+
 export const ProductItem = React.memo(
 	function ProductItem(props: ProductItemProps) {
+		useEffect(() => {
+			activeIssueIdReceiver.signal(props.data.issueKinds[0]?.id);
+		}, [props.data.id]);
+
 		return (
 			<div className={css.productItem}>
-				<ProductItemHeader
-					className={css.productItem__header}
-					data={props.data}
-				/>
+				<div
+					className={css.productItem__col1}
+				>
+					<ProductItemPreviewWrap
+						data={props.data}
+						place={'col1'}
+					/>
+				</div>
 
-				<ProductItemRating
-					className={css.productItem__rating}
-					data={props.data}
-				/>
+				<div className={css.productItem__col2}>
+					<ProductItemHeader
+						className={css.productItem__header}
+						data={props.data}
+					/>
 
-				<ProductItemPreviewAndSelect
-					data={props.data}
-				/>
+					<ProductItemRating
+						className={css.productItem__rating}
+						data={props.data}
+					/>
 
-				<ProductItemDescription
-					data={props.data}
-				/>
+					<ProductItemPreviewAndSelect
+						data={props.data}
+					/>
+
+					<ProductItemDescription
+						data={props.data}
+					/>
+				</div>
 			</div>
 		)
 	}
@@ -57,7 +109,7 @@ function ProductItemHeader(props: ProductItemHeaderProps): React.ReactElement {
 			/>
 
 			<div
-				className={css.header_lightText}
+				className={cn(css.header_lightText, css.header_bottomText)}
 				children={props.data.category}
 			/>
 		</div>
@@ -105,7 +157,8 @@ interface ProductItemSelectProps extends VCProps {
 }
 
 function ProductItemPreviewAndSelect(props: ProductItemSelectProps): React.ReactElement {
-	const [activeId, setActiveId] = React.useState(props.data.issueKinds[0]?.id);
+	const [activeId, setActiveId] = HookCore.useReceiver(activeIssueIdReceiver);
+	HookCore.useReceiver(mediaMatcher);
 
 	const onSelect = React.useCallback((e: ReactClickEvent, data: DM.Product.IssueKind) => {
 		setActiveId(data.id);
@@ -117,24 +170,26 @@ function ProductItemPreviewAndSelect(props: ProductItemSelectProps): React.React
 
 	return (
 		<div className={cn(props.className, css.preview)}>
-			<ProductItemPreview
-				data={selectedData}
-				gender={props.data.gender}
-				productName={`${props.data.name} ${props.data.category}`}
+			<ProductItemPreviewWrap
+				data={props.data}
+				place={'col2'}
 			/>
 
 			<hr className={css.preview__hr} />
 
-			<IssueKindSelected
-				data={selectedData}
-				className={css.preview__selectedBadge}
-			/>
+			<div className={css.preview__selectedWithButton}>
+				<IssueKindSelected
+					data={selectedData}
+					longCaptionMode={mediaMatcher.hasWideCol2}
+					className={css.preview__selectedBadge}
+				/>
 
-			<UXButton
-				children={'Add to Queue'}
-				className={css.preview__button}
-				onClick={() => console.log('heh mda')}
-			/>
+				<UXButton
+					children={'Add to Queue'}
+					className={css.preview__button}
+					onClick={() => console.log('heh mda')}
+				/>
+			</div>
 
 			<div className={css.preview__badges}>
 				{props.data.issueKinds.map(x => {
@@ -144,6 +199,7 @@ function ProductItemPreviewAndSelect(props: ProductItemSelectProps): React.React
 							data={x}
 							isActive={activeId == x.id}
 							key={x.id}
+							longCaptionMode={mediaMatcher.hasWideCol2}
 							onSelect={onSelect}
 						/>
 					)
@@ -208,8 +264,8 @@ const tabItems: UXTabsItem<TabsIdProduct>[] = [
 
 function ProductItemDescription(props: ProductItemDescriptionProps): React.ReactElement {
 	const onRenderTabContent = (data: UXTabsItem<TabsIdProduct>): React.ReactElement | null => {
-		if (data.id == 'howItWorks') return <>{props.data.howItWorks}</>;
-		if (data.id == 'ingredients') return <>{props.data.ingredients}</>;
+		if (data.id == 'howItWorks') return <p>{props.data.howItWorks}</p>;
+		if (data.id == 'ingredients') return <p>{props.data.ingredients}</p>;
 		return null;
 	}
 

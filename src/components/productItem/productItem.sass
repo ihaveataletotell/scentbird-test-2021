@@ -1,18 +1,64 @@
 .productItem
 	margin-top: 25px
+	display: flex
+	flex-flow: row nowrap
+	max-width: 1029px
+	align-self: center
+
+.productItem__col1
+	display: none
+
+	@include width-884
+		display: block
+		flex: 1 0 42.5%
+		margin-right: 60px
+		max-width: 458px
+
+		.preview__imageBox
+			margin: 0
+			width: 100%
+
+.productItem__col2
+	display: flex
+	flex-flow: column nowrap
+
+	@include width-884
+		max-width: 511px
 
 .productItem__header
 	margin-bottom: 28px
 
 .productItem__rating
 	margin-bottom: 25px
+	align-items: center
+
+	@include width-884
+		align-items: flex-start
+
 
 .header
 	text-align: center
+	align-items: center
+
+	@include width-884
+		text-align: left
+		align-items: flex-start
 
 .header_lightText
 	font-family: $font-helvetica
 	color: #333
+
+.header_bottomText
+	font-size: 12px
+	line-height: 14px
+
+	@include width-320
+		font-size: calc(0.741vw + 9.629px)
+		line-height: calc(1.111vw + 10.445px)
+
+	@include width-590
+		font-size: 14px
+		line-height: 17px
 
 .rating__stars
 	display: flex
@@ -39,7 +85,8 @@
 	text-decoration: underline
 
 .preview
-	display: block
+	display: flex
+	flex-flow: column nowrap
 
 .preview__badges
 	display: flex
@@ -47,18 +94,51 @@
 	margin-bottom: 20px
 
 .preview__singleBadge
-	flex: 0 0 calc(50% - 5px)
+	width: calc(50% - 5px)
 	margin-bottom: 10px
 
 	&:nth-child(2n + 1)
 		margin-right: 10px
 
+.preview__selectedWithButton
+	display: flex
+	flex-flow: column nowrap
+	justify-content: space-between
+	margin-bottom: 20px
+
+	@include width-320
+		.preview__button
+			min-width: 190px
+
+	@include width-590
+		flex-flow: row wrap
+
+		.preview__selectedBadge
+			margin-bottom: 0
+			flex: 1 1 auto
+
+		.preview__button
+			flex: 0 0 37%
+
+	@include width-884
+		flex-flow: column nowrap
+
+		.preview__selectedBadge
+			margin-bottom: 20px
+
+		.preview__button
+			width: 100%
+
+	@include width-1100
+		flex-flow: row wrap
+
+
 .preview__selectedBadge
 	margin-bottom: 25px
+	margin-right: 15px
 
 .preview__button
 	width: 100%
-	margin-bottom: 20px
 
 .preview__hr
 	margin-bottom: 30px
@@ -67,6 +147,15 @@
 	position: relative
 	width: 100%
 	margin-bottom: 30px
+	align-self: center
+
+	@include width-320
+		// 290..315
+		width: calc(9.259vw + 260.371px)
+
+	@include width-590
+		width: 315px
+
 
 .preview__imageBoxImage
 	width: 100%
@@ -86,6 +175,18 @@
 .description__header
 	margin-bottom: 21px
 	text-align: center
+	font-size: 16px
+	line-height: 19px
+
+	@include width-590
+		text-align: left
+		margin-bottom: 8px
+		font-size: calc(0.68vw + 11.988px)
+		line-height: calc(1.02vw + 12.982px)
+
+	@include width-884
+		font-size: 18px
+		line-height: 22px
 
 .description__readMore
 	margin-bottom: 30px

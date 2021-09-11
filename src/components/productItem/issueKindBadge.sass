@@ -16,9 +16,15 @@
 	flex: 0 0 40px
 
 .issueBadge__text
-	line-height: 1.21
 	display: flex
 	flex-flow: column nowrap
+	line-height: 1.21
+	overflow: hidden
+
+	div
+		overflow: hidden
+		text-overflow: ellipsis
+		white-space: pre-wrap
 
 .issueBadge__text_large
 	flex-flow: row nowrap

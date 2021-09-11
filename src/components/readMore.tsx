@@ -24,7 +24,7 @@ export function ReadMore(props: ReadMoreProps): React.ReactElement {
 
 	const isLengthExceeded = props.text.length > lengthThreshold;
 	const needCutText = !isExpanded && isLengthExceeded;
-	const toggleText = isExpanded ? ' < Show less' : ' Read more >';
+	const toggleText = isExpanded ? '\u00A0< Show less' : '\u00A0Read more >';
 
 	const textBefore = needCutText
 		? props.text.slice(0, lengthThreshold - 3 - toggleText.length) + '...'
