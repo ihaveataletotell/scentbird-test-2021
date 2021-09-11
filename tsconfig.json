@@ -16,10 +16,11 @@
       "esnext",
     ],
     "jsx": "react-jsx",
-    "baseUrl": "./",
+    "baseUrl": "./src",
   },
   "include": [
-    "./src/**/*"
+    "./src/**/*",
+    "tsconfig.d.ts"
   ],
   "exclude": [
     "node_modules",

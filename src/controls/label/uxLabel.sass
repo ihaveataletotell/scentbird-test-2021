@@ -1,0 +1,19 @@
+.label
+	background-color: inherit
+	color: #9B9B9B
+	font-size: 18px
+	line-height: 22px
+	margin: 10px 8px
+	padding: 0 5px
+	pointer-events: none
+	position: absolute
+	transform-origin: top left
+	transition: transform 0.2s $cubic-bezier-default, opacity 0.2s $cubic-bezier-default
+
+[data-name='edit']:focus + .label
+	opacity: 1
+	transform: translateY(-23.5px) scale(0.75)
+
+.label_hasValue
+	opacity: 0
+	transform: translateY(-23.5px) scale(0.75)

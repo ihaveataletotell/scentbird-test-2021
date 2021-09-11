@@ -1,0 +1,16 @@
+@import './vars'
+
+=registerFont($name, $path, $fileName, $weight, $style)
+	@font-face
+		font-family: $name
+		font-weight: $weight
+		font-style: $style
+		src: url($path + $fileName + '.woff2') format('woff2')
+
+@mixin width-1440
+	@media (min-width: 1440px)
+		@content
+
+@mixin width-1880
+	@media (min-width: 1880px)
+		@content

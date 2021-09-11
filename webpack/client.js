@@ -27,7 +27,7 @@ const base = {
         ]
       },
       {
-        test: /\.scss$/,
+        test: /\.(scss|sass)$/,
         use: [
           {
             loader: 'style-loader',
@@ -35,8 +35,11 @@ const base = {
           {
             loader: 'css-loader',
             options: {
+              esModule: true,
               modules: {
+                exportLocalsConvention: 'dashesOnly',
                 localIdentName: isProduction ? '[hash:base64:6]' : '[local]_[hash:base64:4]',
+                namedExport: true,
               },
               importLoaders: 1,
               sourceMap: true,
@@ -46,6 +49,10 @@ const base = {
             loader: 'sass-loader',
             options: {
               sourceMap: true,
+              sassOptions: {
+                indentedSyntax: true,
+              },
+              additionalData: '@import "sass/global.sass"',
             },
           },
         ]
@@ -85,7 +92,7 @@ if (isProduction) {
     mode: 'production',
     devtool: 'source-map',
   })
-} 
+}
 else {
   module.exports = merge(base, {
     mode: 'development',
