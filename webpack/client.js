@@ -17,6 +17,9 @@ const base = {
     chunkFilename: '[id].[hash:6].js',
     publicPath: '/',
   },
+  devServer: {
+    historyApiFallback: true,
+  },
   module: {
     rules: [
       {
