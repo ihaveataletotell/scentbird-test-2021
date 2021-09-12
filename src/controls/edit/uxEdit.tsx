@@ -7,6 +7,7 @@ import * as css from './uxEdit.sass';
 const InputElement = (props: UXEditVCProps): React.ReactElement => {
 	return (
 		<input
+			autoComplete={props.autoComplete}
 			className={props.className}
 			data-name={'edit'}
 			maxLength={props.maxLength}
@@ -27,6 +28,7 @@ class UXEditVC extends React.PureComponent<UXEditVCProps> {
 
 		return cn(
 			css.edit,
+			props.isDisabled && css.edit_disabled,
 			props.errorMessage && css.edit_hasError,
 			props.className,
 		);
@@ -72,6 +74,7 @@ class UXEdit extends React.PureComponent<UXEditProps> {
 
 		return (
 			<VC
+				autoComplete={props.autoComplete}
 				children={props.children}
 				className={props.className}
 				errorMessage={props.errorMessage}

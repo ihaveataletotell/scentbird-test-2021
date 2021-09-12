@@ -1,0 +1,134 @@
+.formPage
+	align-self: center
+	display: flex
+	flex-flow: column nowrap
+	max-width: 701px
+	width: 100%
+
+.formPage__form
+	margin-bottom: 40px
+
+.formPage__nav
+	display: flex
+	flex-flow: column nowrap
+
+	@include width-590
+		flex-flow: row nowrap
+		justify-content: flex-end
+		align-items: center
+
+		.formPage__back
+			margin-right: 40px
+
+		.formPage__btn
+			order: 1
+			margin-bottom: 0
+			width: 248px
+			position: relative
+
+			div
+				display: block
+				margin-left: 34px
+				position: relative
+				left: 20px
+
+
+.formPage__btn
+	margin-bottom: 20px
+
+	div
+		display: none
+
+.formPage__back
+	text-align: center
+	font-size: 18px
+
+.form
+	display: flex
+	flex-flow: column nowrap
+
+	[data-name='editContainer']
+		margin-bottom: 30px
+
+.form__header
+	margin-bottom: 25px
+	text-align: center
+	font-size: 20px
+	line-height: 24px
+
+	@include width-320
+		font-size: calc(1.481vw + 15.261px)
+		line-height: calc(3.704vw + 12.147px)
+
+	@include width-590
+		font-size: 24px
+		line-height: 34px
+		margin-bottom: 20px
+		text-align: left
+
+
+.form__nameRow, .form__addressRow
+	display: flex
+	flex-flow: column nowrap
+
+	@include width-884
+		flex-flow: row nowrap
+		justify-content: space-between
+
+		> div
+			flex: 1 1 auto
+
+			&:first-child
+				margin-right: 20px
+
+.form__addressRow
+	@include width-884
+		> div:first-child
+			flex: 0 0 60%
+
+.form__postcodeRow
+	display: flex
+	flex-flow: column nowrap
+
+	@include width-884
+		flex-flow: row nowrap
+
+		.form__postcodeSelect
+			display: block
+
+		> div
+			flex: 1 1 auto
+			margin-right: 20px
+
+			&:last-child
+				margin-right: 0
+
+.form__telRow
+	display: flex
+	flex-flow: column nowrap
+
+	@include width-884
+		flex-flow: row nowrap
+		justify-content: flex-start
+		align-items: center
+		margin-bottom: 25px
+
+		.form__telText
+			display: block
+			flex: 0 0 calc(50% - 15px)
+
+		.form__telEdit
+			margin-bottom: 0
+			margin-right: 30px
+			flex: 0 0 calc(50% - 15px)
+
+.form__telText
+	display: none
+
+.form__checkboxText
+	opacity: 0.6
+
+.form__postcodeSelect
+	display: none
+
+

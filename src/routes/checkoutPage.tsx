@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {ShippingAddressForm} from 'components/shippingAddressForm/shippingAddressForm';
 
 interface CheckoutProps {}
 
@@ -7,9 +8,7 @@ export class CheckoutPage extends React.PureComponent<CheckoutProps> {
 
 	render(): React.ReactElement {
 		return (
-			<div
-				children={'checkout page'}
-			/>
+			<ShippingAddressForm />
 		);
 	}
 }

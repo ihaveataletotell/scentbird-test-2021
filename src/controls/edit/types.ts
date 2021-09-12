@@ -12,6 +12,7 @@ export interface UXEditSharedProps<T = string> extends UXBasicVCProps {
 	onBlur?(e: React.FocusEvent): void;
 	type?: string;
 	value?: T;
+	autoComplete?: string;
 }
 
 export interface UXEditVCProps extends UXMapToVCProps<UXEditSharedProps> {

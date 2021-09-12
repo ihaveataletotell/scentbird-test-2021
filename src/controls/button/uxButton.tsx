@@ -2,7 +2,7 @@ import * as React from 'react';
 import cn from 'classnames';
 import * as css from './uxButton.sass'
 
-interface UXButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
+interface UXButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 
 }
 

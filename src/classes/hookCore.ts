@@ -12,7 +12,7 @@ export class HookCore {
 		React.useEffect(() => {
 			instance.subscribe(forceUpdate);
 			return () => instance.unsubscribe(forceUpdate);
-		}, [forceUpdate]);
+		}, [forceUpdate, instance]);
 
 		const setValue = React.useCallback((arg: T) => {
 			instance.signal(arg);

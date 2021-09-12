@@ -2,10 +2,12 @@
 	align-items: center
 	background-color: #FAFAFA
 	display: flex
+	font-size: 18px
 	justify-content: flex-start
+	line-height: 20px
 	outline: 1px solid #E6E6E6
-	transition: background-color 0.2s $cubic-bezier-default, outline 0.2s $cubic-bezier-default
 	position: relative
+	transition: background-color 0.2s $cubic-bezier-default, outline 0.2s $cubic-bezier-default
 
 	&:focus-within
 		background-color: #fff
@@ -14,8 +16,23 @@
 .edit__input
 	flex: 1 1 auto
 	height: 48px
-	line-height: 22px
+	font-size: inherit
+	line-height: inherit
 	padding: 10px 13px
 
 .edit_hasError
 	outline: 2px solid #FD6464
+
+.edit_disabled
+	pointer-events: none
+
+
+.edit input:-webkit-autofill
+	-webkit-box-shadow: 0 0 0px 1000px #FAFAFA inset
+	background-color: inherit
+	color: inherit
+
+	&:focus
+		-webkit-box-shadow: 0 0 0px 1000px #FFF inset
+		background-color: inherit
+		color: inherit
