@@ -6,11 +6,11 @@ import {LinkStyled} from 'smallComponents/navLinkStyled';
 import {UXCheckbox} from 'controls/checkbox/uxCheckbox';
 import {useFormik} from 'formik';
 import {ExtendedVC, VCWrap} from 'common/vcBranch';
-import {useHistory} from 'react-router-dom';
 import {cssUtility} from 'common/cssHelper';
 import {UXDropdown} from 'controls/dropdown/uxDropdown';
 import {IUXDropdownItem} from 'controls/dropdown/types';
 import * as css from './shippingAddressForm.sass';
+import {receiverRoutes} from 'main/mainVarUsers';
 
 interface ShippingAddressFormProps {}
 
@@ -53,29 +53,31 @@ const getInitialValues = (): BasicFormValues => {
 const validate = (values: FormValues) => {
 	const errors: {[K in keyof FormValues]?: string} = {};
 
+	// полагаем под буквами только английские буквы
+	// допустим наше апи не принимает эти данные на русском
 	if (!values.firstName) {
 		errors.firstName = 'This field is required';
-	} else if (!/^[a-z\s]+$/i.test(values.firstName)) {
+	} else if (!/^[a-z]+$/i.test(values.firstName)) {
 		errors.firstName = 'Only letters are allowed';
 	}
 
 	if (!values.lastName) {
 		errors.lastName = 'This field is required';
-	} else if (!/^[a-z\s]+$/i.test(values.lastName)) {
+	} else if (!/^[a-z]+$/i.test(values.lastName)) {
 		errors.lastName = 'Only letters are allowed';
 	}
 
 	if (!values.streetName) {
 		errors.streetName = 'This field is required';
-	} else if (!/^[a-z0-9-\s]+$/i.test(values.lastName)) {
-		errors.streetName = 'Only letters, numbers and dashes are allowed';
+	} else if (!/^[a-z0-9-\s]+$/i.test(values.lastName) || !values.lastName.trim()) {
+		errors.streetName = 'Only letters, numbers, spaces and dashes are allowed';
 	}
 
-	if (!values.country) {
+	if (!values.country || !values.country.trim()) {
 		errors.country = 'This field is required';
 	}
 
-	if (!values.postcode) {
+	if (!values.postcode || !values.postcode.trim()) {
 		errors.postcode = 'This field is required';
 	}
 
@@ -88,8 +90,6 @@ const dontCallMePlease = () => useFormik<FormValues>({} as any);
 type FormikAddressForm = ReturnType<typeof dontCallMePlease>;
 
 export function ShippingAddressForm(props: ShippingAddressFormProps): React.ReactElement {
-	const history = useHistory();
-
 	const formikBilling = useFormik<FormValues>({
 		initialValues: getInitialValues(),
 		validate,
@@ -179,10 +179,7 @@ export function ShippingAddressForm(props: ShippingAddressFormProps): React.Reac
 					<LinkStyled
 						children={'Back'}
 						className={css.formPage__back}
-						// можно сюда прикрутить внутренний счетчик истории переходов
-						// но в historyApi как я понял этого нет
-						onClick={() => history.goBack()}
-						to={'/#'}
+						to={receiverRoutes.prevRoute || ''}
 					/>
 				</div>
 			</div>

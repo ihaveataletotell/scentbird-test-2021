@@ -1,6 +1,7 @@
 import * as React from 'react';
-import {Redirect, Route, Switch} from 'react-router-dom';
+import {Redirect, Route, Switch, useLocation} from 'react-router-dom';
 import {AppRoute} from 'main/mainVar';
+import {receiverRoutes} from 'main/mainVarUsers';
 
 const MainPage = React.lazy(() => import('routes/mainPage').then(x => ({default: x.MainPage})));
 const ProductPage = React.lazy(() => import('routes/productPage').then(x => ({default: x.ProductPage})));
@@ -10,8 +11,10 @@ export const MainRouterSwitch = React.memo(
 	function MainRouteSwitch() {
 		return (
 			<React.Suspense
-				fallback={'Loading...'}
+				fallback={''}
 			>
+				<RouterToReceiver />
+
 				<Switch>
 					<Route
 						exact
@@ -37,3 +40,13 @@ export const MainRouterSwitch = React.memo(
 		);
 	}
 );
+
+function RouterToReceiver(): React.ReactElement | null {
+	const location = useLocation();
+
+	React.useEffect(() => {
+		receiverRoutes.signal(location.pathname);
+	}, [location]);
+
+	return null;
+}

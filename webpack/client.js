@@ -1,10 +1,18 @@
 const path = require('path')
 const webpack = require('webpack')
 const merge = require('webpack-merge').default
-const HtmlWebpackPlugin = require('html-webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const isProduction = process.env.NODE_ENV === 'production'
 const basePath = (file) => path.resolve(process.cwd(), file)
+
+const cssToDomLoader = isProduction
+  ? {
+    loader: MiniCssExtractPlugin.loader,
+  } : {
+    loader: 'style-loader',
+  };
 
 const base = {
   entry: {
@@ -32,9 +40,7 @@ const base = {
       {
         test: /\.(scss|sass)$/,
         use: [
-          {
-            loader: 'style-loader',
-          },
+          cssToDomLoader,
           {
             loader: 'css-loader',
             options: {
@@ -87,7 +93,11 @@ const base = {
       filename: 'index.html',
       inject: 'body',
     }),
-  ],
+    isProduction ? new MiniCssExtractPlugin({
+      filename: '[name].css',
+      chunkFilename: 'ch.[name].css'
+    }) : undefined,
+  ].filter(Boolean),
 }
 
 if (isProduction) {
