@@ -83,8 +83,9 @@
 
 .form__addressRow
 	@include width-884
-		> div:first-child
-			flex: 0 0 60%
+		> div
+			&:first-child
+				flex: 0 0 60%
 
 .form__postcodeRow
 	display: flex
@@ -97,11 +98,18 @@
 			display: block
 
 		> div
-			flex: 1 1 auto
 			margin-right: 20px
+			flex: 0 0 calc(33.3% - 13.5px)
 
 			&:last-child
 				margin-right: 0
+				flex: 1 1 auto
+
+.form__country[data-name='editContainer']
+	margin-bottom: 0
+
+.form__country + .form__telRow
+	margin-top: 30px
 
 .form__telRow
 	display: flex

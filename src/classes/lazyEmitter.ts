@@ -1,3 +1,4 @@
+// типо throttle, только называется нормально
 export class LazyEmitter<T = void> {
 	private _callArg: T | undefined;
 	private _callBlocked: boolean;
@@ -30,22 +31,6 @@ export class LazyEmitter<T = void> {
 		this._callArg = undefined;
 		this._needCall = false;
 		window.clearTimeout(this._timeout);
-	}
-
-	get method(): ((arg: T) => void) {
-		return this._method;
-	}
-
-	set method(fn: (arg: T) => void) {
-		this._method = fn;
-	}
-
-	get isCallBlocked(): boolean {
-		return this._callBlocked;
-	}
-
-	get delay(): number {
-		return this._delay;
 	}
 
 	call = (arg: T): void => {

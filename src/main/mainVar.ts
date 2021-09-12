@@ -1,4 +1,4 @@
-import {ThrottledReceiver} from 'classes/notifier';
+// в этом модуле запрещаются импорты
 
 export const enum AppRoute {
 	main = '/',
@@ -7,8 +7,4 @@ export const enum AppRoute {
 	product_Id_reviews = '/product/:id/reviews',
 
 	_product = '/product',
-}
-
-export const receiver = {
-	windowResize: new ThrottledReceiver<number>(),
 }

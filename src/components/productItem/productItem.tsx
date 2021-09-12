@@ -11,14 +11,14 @@ import {UXTabsSwitch} from 'controls/tabs/uxTabs';
 import {UXTabsItem} from 'controls/tabs/types';
 import {LazyReceiver} from 'classes/notifier';
 import {HookCore} from 'classes/hookCore';
-import {MediaMatcher, ScreenWidth} from 'classes/mediaMatcher';
+import {ScreenWidth} from 'classes/mediaMatcher';
+import {receiverMediaMatcher} from 'main/mainVarUsers';
 import * as css from './productItem.sass';
 
 interface ProductItemProps {
 	data: DM.Product.Data;
 }
 
-const mediaMatcher = new MediaMatcher();
 const activeIssueIdReceiver = new LazyReceiver<string | undefined>();
 
 interface ProductItemPreviewWrapProps extends VCWrapProps {
@@ -28,7 +28,7 @@ interface ProductItemPreviewWrapProps extends VCWrapProps {
 
 const ProductItemPreviewWrap = (props: ProductItemPreviewWrapProps): React.ReactElement | null => {
 	const [activeId] = HookCore.useReceiver(activeIssueIdReceiver);
-	const [screenWidth] = HookCore.useReceiver(mediaMatcher);
+	const [screenWidth] = HookCore.useReceiver(receiverMediaMatcher);
 
 	const selectedData = React.useMemo(() => {
 		return props.data.issueKinds.find(x => x.id == activeId);
@@ -158,7 +158,7 @@ interface ProductItemSelectProps extends VCProps {
 
 function ProductItemPreviewAndSelect(props: ProductItemSelectProps): React.ReactElement {
 	const [activeId, setActiveId] = HookCore.useReceiver(activeIssueIdReceiver);
-	HookCore.useReceiver(mediaMatcher);
+	HookCore.useReceiver(receiverMediaMatcher);
 
 	const onSelect = React.useCallback((e: ReactClickEvent, data: DM.Product.IssueKind) => {
 		setActiveId(data.id);
@@ -180,7 +180,7 @@ function ProductItemPreviewAndSelect(props: ProductItemSelectProps): React.React
 			<div className={css.preview__selectedWithButton}>
 				<IssueKindSelected
 					data={selectedData}
-					longCaptionMode={mediaMatcher.hasWideCol2}
+					longCaptionMode={receiverMediaMatcher.hasWideCol2}
 					className={css.preview__selectedBadge}
 				/>
 
@@ -199,7 +199,7 @@ function ProductItemPreviewAndSelect(props: ProductItemSelectProps): React.React
 							data={x}
 							isActive={activeId == x.id}
 							key={x.id}
-							longCaptionMode={mediaMatcher.hasWideCol2}
+							longCaptionMode={receiverMediaMatcher.hasWideCol2}
 							onSelect={onSelect}
 						/>
 					)

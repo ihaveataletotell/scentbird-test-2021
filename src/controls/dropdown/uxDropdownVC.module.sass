@@ -1,0 +1,94 @@
+.dropdown
+	height: 50px
+	font-size: 18px
+	line-height: 22px
+	position: relative
+	color: #000
+
+	&:hover, &:focus-within
+		.dropdown__header
+			border-color: #FF408E
+
+		.header__icon
+			color: #24668C
+
+.dropdown_disabled
+	pointer-events: none
+
+.dropdown_hasValue
+	.dropdown__header
+		text-transform: uppercase
+		color: inherit
+
+.dropdown_open
+	.dropdown__header
+		background-color: #fff
+
+	.header__icon
+		transform: rotateZ(180deg)
+
+// определяем border на этом уровне, чтобы header по боксу был одинаковый с dropdown, а не меньше
+.dropdown__header
+	align-items: center
+	background-color: #FAFAFA
+	border: 1px solid #E6E6E6
+	cursor: pointer
+	display: flex
+	height: 100%
+	justify-content: space-between
+	padding: 14px
+	color: #9B9B9B
+	outline: none
+	transition: border-color 0.2s $cubic-bezier-default, background-color 0.2s $cubic-bezier-default
+
+.header__caption
+	flex: 1 1 auto
+	overflow: hidden
+	text-overflow: ellipsis
+	white-space: nowrap
+
+.header__icon
+	flex: 0 0 auto
+	color: #FF458F
+	transition: color 0.2s $cubic-bezier-default, transform .2s $cubic-bezier-default
+	transform-origin: 5px 7px
+
+.dropdown__items
+	background-color: #fff
+	border: 1px solid #E6E6E6
+	border-top: none
+	left: 0
+	// 6 итемов чтобы влазило
+	max-height: 325px
+	overflow: auto
+	position: absolute
+	right: 0
+	text-transform: uppercase
+	top: 100%
+	z-index: 1
+
+.dropdown__itemsInner
+	display: flex
+	flex-flow: column nowrap
+
+.dropdown__item
+	align-items: center
+	display: flex
+	height: 50px
+	justify-content: flex-start
+	padding: 7px 14px
+	cursor: pointer
+	outline: none
+	white-space: nowrap
+
+	&:hover, &:focus
+		color: #FF408E
+
+.dropdown__itemText
+	flex: 1 1 auto
+	overflow: hidden
+	text-overflow: ellipsis
+
+.dropdown__item_selected
+	background: darken(#FAFAFA, 5%)
+	pointer-events: none

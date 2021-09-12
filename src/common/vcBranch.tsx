@@ -1,5 +1,8 @@
 import * as React from 'react';
 
+// эта мини-библа нужна для conditional rendering, только не с уродскими || &&, а нормально
+// у меня даже на npm есть такая, ток немного измененная
+
 export function VCWrap(props: VCWrapProps): React.ReactElement | null {
 	if (props.doNotRender) return props.fallback || null;
 	return <>{props.children}</>;
@@ -25,13 +28,6 @@ export const VCIfHasChildren = function VCIfChildren(props: VCStyledProps): Reac
 	if (!props.children) return null;
 	return <VC {...props} />;
 };
-
-export const VCIf = React.memo(
-	function VCIf(props: VCIfProps): React.ReactElement {
-		if (props.if) return props.children[0];
-		return props.children[1];
-	}
-);
 
 export const ExtendedVC = React.memo(
 	function ExtendedVC(props: ExtendedVCProps): React.ReactElement | null {

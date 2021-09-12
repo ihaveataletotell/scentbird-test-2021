@@ -1,5 +1,6 @@
 import {LazyEmitter} from 'classes/lazyEmitter';
 
+// основы общения между сущностями в программировании и просто классика жанра
 export class Notifier<T = void> {
 	private _listeners: Set<(arg: T) => void>;
 

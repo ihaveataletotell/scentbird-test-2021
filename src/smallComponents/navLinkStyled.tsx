@@ -20,8 +20,8 @@ export const NavLinkStyled = (props: NavLinkProps): React.ReactElement => {
 export const LinkStyled = (props: LinkProps): React.ReactElement => {
 	return (
 		<Link
-			className={cn(props.className, styledProps.className)}
 			{...props}
+			className={cn(props.className, styledProps.className)}
 		/>
 	)
 }

@@ -6,6 +6,7 @@ type ReceiverReturnType<T> = [T | undefined, (arg: T) => void];
 export class HookCore {
 	private static fnIncrementer = (x: number): number => ++x % 10;
 
+	// попробовал законнектить мое мини-ооп в хуки, вроде что-то вышло
 	public static useReceiver = <T>(instance: Receiver<T>): ReceiverReturnType<T> => {
 		const [_, forceUpdate] = React.useReducer(HookCore.fnIncrementer, 0);
 

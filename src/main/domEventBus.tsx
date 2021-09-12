@@ -1,6 +1,5 @@
 import * as React from 'react';
-import {receiver} from 'main/mainVar';
-
+import {receiverResize} from 'main/mainVarUsers';
 
 export class DomEventBus extends React.PureComponent {
 	componentDidMount() {
@@ -12,7 +11,7 @@ export class DomEventBus extends React.PureComponent {
 	}
 
 	handleResize = () => {
-		receiver.windowResize.signal(window.innerWidth);
+		receiverResize.signal(window.innerWidth);
 	}
 
 

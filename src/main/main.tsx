@@ -1,11 +1,12 @@
 import 'sass/normalize.sass';
 import 'sass/customize.sass';
+import 'classes/linearFnLayout';
+import './mainVarUsers';
 import * as React from 'react';
 import {BrowserRouter} from 'react-router-dom';
 import {NavLinkStyled} from 'smallComponents/navLinkStyled';
 import {MainRouterSwitch} from 'routes';
 import {AppRoute} from 'main/mainVar';
-import 'classes/linearFnLayout';
 import {DomEventBus} from 'main/domEventBus';
 import * as css from 'main/main.sass';
 

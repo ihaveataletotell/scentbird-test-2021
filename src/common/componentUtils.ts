@@ -82,3 +82,30 @@ export class ComponentUtils {
 		return this.dispatchOnKeyThunk('Enter', callback, stopPropagation);
 	}
 }
+
+export class UXUtils {
+	static getDataNameEl(e: ReactClickEvent, value?: UXDataName): AppStrictElement | undefined {
+		return this.getAppHtmlElement(e, 'name', value);
+	}
+
+	static getAppHtmlElement<T extends AppHtmlGeneric>(e: ReactClickEvent, by: T, value?: AppHtmlGenericMap[T]): AppStrictElement | undefined {
+		const target = e.target as HTMLElement;
+		const currentTarget = e.currentTarget as HTMLElement;
+
+		const selector = UXUtils.getDataSelector(by, value);
+		const closest = closestSafe<ReactHtmlElement>(target, selector);
+
+		if (!closest || !containsSafe(currentTarget, closest)) return;
+
+		return closest as AppStrictElement;
+	}
+
+	static getDataSelector<T extends AppHtmlGeneric>(by: T, value?: AppHtmlGenericMap[T]): string {
+		// ищем с атрибутом с непустым значением
+		const selector = value
+			? `[data-${by}="${value}"]`
+			: `[data-${by}]:not([data-${by}=""])`;
+
+		return selector;
+	}
+}

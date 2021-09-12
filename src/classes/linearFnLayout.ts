@@ -15,13 +15,14 @@ declare global {
 }
 
 // Функция для получения адаптированной css ширины элемента в пределах заданных размеров окна
-// Используется не в коде, а для верстки.
+// Используется для верстки в консоли
 window.calc = (elemSize: MinMaxSize, windowSize: MinMaxSize): string => {
 	const factors = LinearFnLayout.calcLinearFunc(elemSize, windowSize);
 	return LinearFnLayout.getCssWidth(factors);
 };
 
-export class LinearFnLayout {
+class LinearFnLayout {
+	// вот через эту функцию я и получаю размеры элементов в css
 	static getCssWidth(linearFunc: LinearFuncFactors): string {
 		return `calc(${linearFunc.x}vw + ${linearFunc.y}px)`;
 	}

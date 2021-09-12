@@ -2,12 +2,14 @@ import * as React from 'react';
 import cn from 'classnames';
 import {UXEditWithLabel} from 'controls/edit/uxEdit';
 import {UXButton} from 'controls/button/uxButton';
-import {NavLinkStyled} from 'smallComponents/navLinkStyled';
+import {LinkStyled} from 'smallComponents/navLinkStyled';
 import {UXCheckbox} from 'controls/checkbox/uxCheckbox';
 import {useFormik} from 'formik';
 import {ExtendedVC, VCWrap} from 'common/vcBranch';
 import {useHistory} from 'react-router-dom';
 import {cssUtility} from 'common/cssHelper';
+import {UXDropdown} from 'controls/dropdown/uxDropdown';
+import {IUXDropdownItem} from 'controls/dropdown/types';
 import * as css from './shippingAddressForm.sass';
 
 interface ShippingAddressFormProps {}
@@ -18,22 +20,33 @@ interface FormValues extends BasicFormValues {
 }
 
 interface BasicFormValues {
+	appOrSuite: string;
+	city1: string;
+	city2: string;
+	country: string;
 	firstName: string;
 	lastName: string;
-	streetName: string;
-	appOrSuite: string;
 	postcode: string;
-	country: string;
+	streetName: string;
 }
+
+const cityItemsHardcoded: IUXDropdownItem[] = [
+	{caption: 'New York', id: '1'},
+	{caption: 'Los Angeles', id: '2'},
+	{caption: 'San Francisco', id: '3'},
+	{caption: 'San Diego', id: '4'},
+];
 
 const getInitialValues = (): BasicFormValues => {
 	return {
+		appOrSuite: '',
+		city1: '1',
+		city2: '1',
+		country: 'UNITED STATES',
 		firstName: '',
 		lastName: '',
-		streetName: '',
-		appOrSuite: '',
 		postcode: '100095',
-		country: 'UNITED STATES',
+		streetName: '',
 	};
 }
 
@@ -41,21 +54,29 @@ const validate = (values: FormValues) => {
 	const errors: {[K in keyof FormValues]?: string} = {};
 
 	if (!values.firstName) {
-		errors.firstName = 'Required';
+		errors.firstName = 'This field is required';
 	} else if (!/^[a-z\s]+$/i.test(values.firstName)) {
-		errors.firstName = 'Only english letters are allowed';
+		errors.firstName = 'Only letters are allowed';
 	}
 
 	if (!values.lastName) {
-		errors.lastName = 'Required';
+		errors.lastName = 'This field is required';
 	} else if (!/^[a-z\s]+$/i.test(values.lastName)) {
-		errors.lastName = 'Only english letters are allowed';
+		errors.lastName = 'Only letters are allowed';
 	}
 
 	if (!values.streetName) {
-		errors.streetName = 'Required';
-	} else if (!/^[a-z0-9\s-]+$/i.test(values.lastName)) {
-		errors.streetName = 'Invalid input';
+		errors.streetName = 'This field is required';
+	} else if (!/^[a-z0-9-\s]+$/i.test(values.lastName)) {
+		errors.streetName = 'Only letters, numbers and dashes are allowed';
+	}
+
+	if (!values.country) {
+		errors.country = 'This field is required';
+	}
+
+	if (!values.postcode) {
+		errors.postcode = 'This field is required';
 	}
 
 	return errors;
@@ -155,11 +176,13 @@ export function ShippingAddressForm(props: ShippingAddressFormProps): React.Reac
 						/>
 					</UXButton>
 
-					<NavLinkStyled
+					<LinkStyled
 						children={'Back'}
 						className={css.formPage__back}
-						to={'/#'}
+						// можно сюда прикрутить внутренний счетчик истории переходов
+						// но в historyApi как я понял этого нет
 						onClick={() => history.goBack()}
+						to={'/#'}
 					/>
 				</div>
 			</div>
@@ -234,26 +257,33 @@ const AbstractAddressForm = React.memo(
 				<div className={css.form__postcodeRow}>
 					<UXEditWithLabel
 						autoComplete={'postal-code'}
-						isDisabled
 						name={'postcode'}
 						onBlur={formik.handleBlur}
+						errorMessage={formik.touched.postcode ? formik.errors.postcode : undefined}
 						onChange={formik.handleChange}
 						placeholder={'Postcode'}
 						value={formik.values.postcode}
 					/>
 
-					<div
+					<UXDropdown
 						className={css.form__postcodeSelect}
+						items={cityItemsHardcoded}
+						onChange={(e, selectedId) => formik.setFieldValue('city1', selectedId)}
+						value={formik.values.city1}
 					/>
 
-					<div
+					<UXDropdown
 						className={css.form__postcodeSelect}
+						items={cityItemsHardcoded}
+						onChange={(e, selectedId) => formik.setFieldValue('city2', selectedId)}
+						value={formik.values.city2}
 					/>
 				</div>
 
 				<UXEditWithLabel
 					autoComplete={'country-name'}
-					isDisabled
+					className={css.form__country}
+					errorMessage={formik.touched.country ? formik.errors.country : undefined}
 					name={'country'}
 					onBlur={formik.handleBlur}
 					onChange={formik.handleChange}

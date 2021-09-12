@@ -1,5 +1,4 @@
-import {receiver} from 'main/mainVar';
-import {LazyReceiver} from 'classes/notifier';
+import {LazyReceiver, Receiver} from 'classes/notifier';
 
 export const enum ScreenWidth {
 	least = 1,
@@ -9,11 +8,15 @@ export const enum ScreenWidth {
 	desktop = 1100,
 }
 
+// ну этот дядя просто общается с ресивером ресайз эвента и смотрит, какая у нас сейчас верстка будет
+// если сменили тип верстки, то уведомляем
 export class MediaMatcher extends LazyReceiver<ScreenWidth> {
-	constructor() {
+	constructor(
+		private receiver: Receiver<number>
+	) {
 		super();
 
-		receiver.windowResize.subscribe(this.handleCalcScreenWidth);
+		receiver.subscribe(this.handleCalcScreenWidth);
 		this.handleCalcScreenWidth();
 	}
 
@@ -34,7 +37,6 @@ export class MediaMatcher extends LazyReceiver<ScreenWidth> {
 		return (
 			!!this.received
 			&& this.received > ScreenWidth.mobile
-			// && this.received != ScreenWidth.tabletLandscape
 		);
 	}
 }

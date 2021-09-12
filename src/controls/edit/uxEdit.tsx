@@ -1,6 +1,6 @@
 import * as React from 'react';
 import cn from 'classnames';
-import {UXEditVCProps} from 'controls/edit/types';
+import {UXEditProps, UXEditVCProps} from 'controls/edit/types';
 import {withLabelHoc} from 'controls/label/withLabel';
 import * as css from './uxEdit.sass';
 
@@ -16,6 +16,7 @@ const InputElement = (props: UXEditVCProps): React.ReactElement => {
 			onChange={props.onChange}
 			placeholder={props.placeholder}
 			readOnly={props.isDisabled}
+			title={props.title}
 			type={props.type}
 			value={props.value}
 		/>
@@ -46,6 +47,7 @@ class UXEditVC extends React.PureComponent<UXEditVCProps> {
 					{...props}
 					className={css.edit__input}
 					children={undefined}
+					title={props.title ?? props.placeholder}
 					placeholder={undefined}
 				/>
 
@@ -84,6 +86,7 @@ class UXEdit extends React.PureComponent<UXEditProps> {
 				onBlur={props.onBlur}
 				onChange={this.handleChange}
 				placeholder={props.placeholder!}
+				title={props.title}
 				type={props.type}
 				value={props.value || ''}
 			/>
