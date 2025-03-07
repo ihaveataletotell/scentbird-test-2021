@@ -1,18 +1,13 @@
-const path = require('path')
-const webpack = require('webpack')
-const merge = require('webpack-merge').default
+const path = require('path');
+const webpack = require('webpack');
+const { merge } = require('webpack-merge');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-const isProduction = process.env.NODE_ENV === 'production'
-const basePath = (file) => path.resolve(process.cwd(), file)
+const isProduction = process.env.NODE_ENV === 'production';
+const basePath = (file) => path.resolve(process.cwd(), file);
 
-const cssToDomLoader = isProduction
-  ? {
-    loader: MiniCssExtractPlugin.loader,
-  } : {
-    loader: 'style-loader',
-  };
+const cssToDomLoader = isProduction ? MiniCssExtractPlugin.loader : 'style-loader';
 
 const base = {
   entry: {
@@ -21,8 +16,8 @@ const base = {
   target: 'web',
   output: {
     path: basePath('build'),
-    filename: '[name].[hash:6].js',
-    chunkFilename: '[id].[hash:6].js',
+    filename: '[name].[contenthash:6].js',
+    chunkFilename: '[id].[contenthash:6].js',
     publicPath: '/',
   },
   devServer: {
@@ -32,10 +27,7 @@ const base = {
     rules: [
       {
         test: /\.css$/,
-        use: [
-          'style-loader',
-          'css-loader',
-        ]
+        use: ['style-loader', 'css-loader'],
       },
       {
         test: /\.(scss|sass)$/,
@@ -58,33 +50,25 @@ const base = {
             loader: 'sass-loader',
             options: {
               sourceMap: true,
-              sassOptions: {
-                indentedSyntax: true,
-              },
-              additionalData: '@import "sass/global.sass"',
+              sassOptions: { indentedSyntax: true },
+              additionalData: '@import "sass/global.sass";',
             },
           },
-        ]
+        ],
       },
       {
         test: /\.(js|ts|tsx)$/,
         exclude: /node_modules/,
-        use: [
-          {
-            loader: 'babel-loader',
-          },
-        ],
+        use: ['babel-loader'],
       },
-    ]
+    ],
   },
   resolve: {
     modules: [basePath('src'), 'node_modules'],
     extensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],
   },
   plugins: [
-    new webpack.EnvironmentPlugin({
-      'NODE_ENV': 'development',
-    }),
+    new webpack.EnvironmentPlugin({ NODE_ENV: 'development' }),
     new webpack.NoEmitOnErrorsPlugin(),
     new HtmlWebpackPlugin({
       title: 'Scentbird',
@@ -93,22 +77,18 @@ const base = {
       filename: 'index.html',
       inject: 'body',
     }),
-    isProduction ? new MiniCssExtractPlugin({
+    isProduction &&
+    new MiniCssExtractPlugin({
       filename: '[name].css',
-      chunkFilename: 'ch.[name].css'
-    }) : undefined,
+      chunkFilename: 'ch.[name].css',
+    }),
+    new webpack.DefinePlugin({
+      'process.env.NODE_OPTIONS': JSON.stringify('--openssl-legacy-provider'),
+    }),
   ].filter(Boolean),
-}
+};
 
-if (isProduction) {
-  module.exports = merge(base, {
-    mode: 'production',
-    devtool: 'source-map',
-  })
-}
-else {
-  module.exports = merge(base, {
-    mode: 'development',
-    devtool: 'cheap-module-source-map',
-  })
-}
+module.exports = merge(base, {
+  mode: isProduction ? 'production' : 'development',
+  devtool: isProduction ? 'source-map' : 'cheap-module-source-map',
+});
