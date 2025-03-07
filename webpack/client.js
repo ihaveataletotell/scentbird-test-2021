@@ -22,6 +22,9 @@ const base = {
   },
   devServer: {
     historyApiFallback: true,
+    client: {
+      overlay: false
+    }
   },
   module: {
     rules: [
@@ -49,9 +52,10 @@ const base = {
           {
             loader: 'sass-loader',
             options: {
+              implementation: require("sass"),
               sourceMap: true,
               sassOptions: { indentedSyntax: true },
-              additionalData: '@import "sass/global.sass";',
+              additionalData: '@use "sass/global" as *',
             },
           },
         ],
@@ -91,4 +95,5 @@ const base = {
 module.exports = merge(base, {
   mode: isProduction ? 'production' : 'development',
   devtool: isProduction ? 'source-map' : 'cheap-module-source-map',
+  stats: 'errors-only',
 });
